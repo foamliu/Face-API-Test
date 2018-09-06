@@ -2,7 +2,8 @@ import json
 
 import cv2 as cv
 import requests
-
+from io import BytesIO
+from PIL import Image
 
 def draw_landmarks(image, faces):
     for face in faces:
@@ -62,7 +63,12 @@ def draw_landmarks(image, faces):
 if __name__ == '__main__':
     url = 'http://localhost:5000/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true'
 
-    files = [('images', ('test.jpg', open('images/Donald-Trump.jpg', 'rb'), 'image/jpeg'))]
+    image_file = BytesIO()
+    img = Image.open('images/Donald-Trump.jpg')
+    img.save(image_file, "JPEG")
+    image_file.seek(0)
+
+    files = [('images', ('test.jpg', image_file, 'image/jpeg'))]
     r = requests.post(url, files=files)
     print(r.text)
     faces = json.loads(r.text)
