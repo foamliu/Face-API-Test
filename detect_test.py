@@ -1,9 +1,10 @@
 import json
+from io import BytesIO
 
 import cv2 as cv
 import requests
-from io import BytesIO
 from PIL import Image
+
 
 def draw_landmarks(image, faces):
     for face in faces:
